@@ -27,9 +27,7 @@ on:
 env:
   REPO_URL: https://github.com/hanwckf/bl-mt798x
   REPO_BRANCH: master
-  CONFIG_FILE_ATF: ATF_UBOOT/mt7986_redmi_ax6000_512_defconfig-atf
-  CONFIG_FILE_UBOOT: ATF_UBOOT/mt7986_redmi_ax6000_512_defconfig-uboot
-  DIY_SH: ATF_UBOOT/diy-part.sh
+  DIY_SH: atf_uboot_build/diy-part.sh
   SSH_ACTIONS: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
