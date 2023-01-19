@@ -26,7 +26,7 @@ on:
 
 env:
   REPO_URL: https://github.com/lgs2007m/Redmi-AX6000-SPI-NAND-512MB
-  REPO_BRANCH: master
+  REPO_BRANCH: main
   SSH_ACTIONS: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
@@ -75,7 +75,7 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         
-    - name: 下载文件
+    - name: 整理文件
       id: compile
       run: |
         cd openwrt
