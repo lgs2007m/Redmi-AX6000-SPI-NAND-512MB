@@ -3,4 +3,6 @@
 
 固件已集成安装kmod-mtd-rw，知己运行下面命令解锁分区的写入：
 
-`insmod /lib/modules/$(uname -r)/mtd-rw.ko i_want_a_brick=1`
+```bash
+insmod /lib/modules/$(uname -r)/mtd-rw.ko i_want_a_brick=1
+```
