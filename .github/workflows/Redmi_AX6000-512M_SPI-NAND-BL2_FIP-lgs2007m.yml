@@ -103,7 +103,7 @@ jobs:
         cp atf-20220606-637ba581b/configs/mt7986_redmi_ax6000_defconfig outputfile/mt7986_redmi_ax6000_512_defconfig-atf
         cp uboot-mtk-20220606/configs/mt7986_redmi_ax6000_defconfig outputfile/mt7986_redmi_ax6000_512_defconfig-uboot
         cp uboot-mtk-20220606/arch/arm/mach-mediatek/Kconfig outputfile/Kconfig
-        cp uboot-mtk-20220606/uboot-mtk-20220606/arch/arm/dts/mt7986a-redmi-ax6000.dts outputfile/mt7986a-redmi-ax6000.dts
+        cp uboot-mtk-20220606/arch/arm/dts/mt7986a-redmi-ax6000.dts outputfile/mt7986a-redmi-ax6000.dts
         cp atf-20220606-637ba581b/build/mt7986/release/bl2.img outputfile/redmi_ax6000-512m_spi-nand-bl2.bin
         cp atf-20220606-637ba581b/build/mt7986/release/fip.bin outputfile/redmi_ax6000-512m_spi-nand-fip-fixed-parts.bin
         cd outputfile
