@@ -24,7 +24,7 @@ on:
 env:
   REPO_URL: https://github.com/lgs2007m/immortalwrtARM
   REPO_BRANCH: mt7986
-  FEEDS_CONF: feeds.conf.default
+  FEEDS_CONF: firmware_build/feeds.conf.default
   CONFIG_FILE: firmware_build/.config
   DIY_P1_SH: firmware_build/diy-part1.sh
   DIY_P2_SH: firmware_build/diy-part2.sh
