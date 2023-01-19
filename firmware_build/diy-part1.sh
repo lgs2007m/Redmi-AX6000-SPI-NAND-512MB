@@ -22,6 +22,6 @@ echo 'src-git messense https://github.com/messense/aliyundrive-webdav' >>feeds.c
 ## 修改DTS的ubi为490MB的0x1ea00000
 sed -i 's/reg = <0x600000 0x6e00000>/reg = <0x600000 0x1ea00000>/' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7986a-xiaomi-redmi-router-ax6000-uboot.dts
 ## 修改DTS的memory为2048MB的0x80000000
-sed -i 's/reg = <0 0x40000000 0 0x10000000>/reg = <0 0x40000000 0 0x80000000>/' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7986a-xiaomi-redmi-router-ax6000-uboot.dts
+#sed -i 's/reg = <0 0x40000000 0 0x10000000>/reg = <0 0x40000000 0 0x80000000>/' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7986a-xiaomi-redmi-router-ax6000-uboot.dts
 ## 修改DTS的spi_nand的spi-max-frequency为66500000。原闪存为104MHz，TC58CVG2S0HRAIJ为133MHz
-sed -i 's/spi-max-frequency = <20000000>/spi-max-frequency = <66500000>/' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7986a-xiaomi-redmi-router-ax6000-uboot.dts
+#sed -i 's/spi-max-frequency = <20000000>/spi-max-frequency = <66500000>/' target/linux/mediatek/files-5.4/arch/arm64/boot/dts/mediatek/mt7986a-xiaomi-redmi-router-ax6000-uboot.dts
