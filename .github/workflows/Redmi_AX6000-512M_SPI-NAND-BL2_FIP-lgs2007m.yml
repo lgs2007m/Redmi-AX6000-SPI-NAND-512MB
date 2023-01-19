@@ -34,11 +34,14 @@ env:
   TZ: Asia/Shanghai
   ###############改名字##############
   OPENWRT_NAME: lgs2007m
-  DEVICE_NAME: redmi_ax6000
+  DEVICE_NAME: redmi_ax6000-512m_spi-nand-bl2_fip
 
 jobs:
   build:
     runs-on: ubuntu-20.04
+    
+    permissions:
+      contents: write
     
     steps:
     - name: 检查项目分支
