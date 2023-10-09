@@ -25,7 +25,7 @@ on:
 #    - cron: 0 16 * * *
 
 env:
-  REPO_URL: https://github.com/hanwckf/bl-mt798x
+  REPO_URL: https://github.com/lgs2007m/bl-mt798x
   REPO_BRANCH: master
   DIY_SH: atf_uboot_build/diy-part.sh
   SSH_ACTIONS: false
@@ -89,7 +89,8 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        SOC=mt7986 BOARD=redmi_ax6000 ./build.sh
+        sudo apt install gcc-aarch64-linux-gnu build-essential flex bison libssl-dev
+        SOC=mt7986 BOARD=redmi_ax6000 MULTI_LAYOUT=1 ./build.sh
         echo "FILE_DATE=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
         
