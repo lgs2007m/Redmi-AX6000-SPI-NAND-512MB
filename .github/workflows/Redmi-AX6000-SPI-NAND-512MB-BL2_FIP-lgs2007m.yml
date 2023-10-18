@@ -25,7 +25,7 @@ on:
 #    - cron: 0 16 * * *
 
 env:
-  REPO_URL: https://github.com/lgs2007m/bl-mt798x
+  REPO_URL: https://github.com/hanwckf/bl-mt798x
   REPO_BRANCH: master
   DIY_SH: atf_uboot_build/diy-part.sh
   SSH_ACTIONS: false
