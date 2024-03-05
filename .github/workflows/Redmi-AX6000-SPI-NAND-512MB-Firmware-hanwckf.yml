@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 ###############改名字##############
-name: Redmi-AX6000-SPI-NAND-512MB-Firmware-padavanonly
+name: Redmi-AX6000-SPI-NAND-512MB-Firmware-hanwckf
 
 on:
   repository_dispatch:
@@ -22,18 +22,18 @@ on:
 #    - cron: 0 16 * * *
 
 env:
-  REPO_URL: https://github.com/padavanonly/immortalwrtARM
-  REPO_BRANCH: mt7986
+  REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
+  REPO_BRANCH: openwrt-21.02
   FEEDS_CONF: 
-  CONFIG_FILE: firmware_build/padavanonly.config
-  DIY_P1_SH: firmware_build/padavanonly.diy-part1.sh
-  DIY_P2_SH: firmware_build/padavanonly.diy-part2.sh
+  CONFIG_FILE: firmware_build/hanwckf.config
+  DIY_P1_SH: firmware_build/hanwckf.diy-part1.sh
+  DIY_P2_SH: firmware_build/hanwckf.diy-part2.sh
   SSH_ACTIONS: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
   ###############改名字##############
-  OPENWRT_NAME: padavanonly
+  OPENWRT_NAME: hanwckf
 
 jobs:
   build:
