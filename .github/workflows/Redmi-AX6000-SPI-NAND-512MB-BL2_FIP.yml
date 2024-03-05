@@ -76,7 +76,7 @@ jobs:
     - name: 编译uboot
       id: compile
       run: |
-        cd atf_uboot_build/redmi_ax6000_spinand-512m_bl2_fip.patch openwrt/redmi_ax6000_spinand-512m_bl2_fip.patch
+        cp atf_uboot_build/redmi_ax6000_spinand-512m_bl2_fip.patch openwrt/redmi_ax6000_spinand-512m_bl2_fip.patch
         cd openwrt
         echo -e "$(nproc) thread compile"
         sudo apt install gcc-aarch64-linux-gnu build-essential flex bison libssl-dev
