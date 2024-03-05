@@ -24,7 +24,7 @@ on:
 env:
   REPO_URL: https://github.com/padavanonly/immortalwrtARM
   REPO_BRANCH: mt7986
-  FEEDS_CONF: 
+  FEEDS_CONF: firmware_build/padavanonly.feeds.conf.default
   CONFIG_FILE: firmware_build/padavanonly.config
   DIY_P1_SH: firmware_build/padavanonly.diy-part1.sh
   DIY_P2_SH: firmware_build/padavanonly.diy-part2.sh

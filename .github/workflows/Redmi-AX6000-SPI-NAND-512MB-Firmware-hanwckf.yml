@@ -24,7 +24,7 @@ on:
 env:
   REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
-  FEEDS_CONF: 
+  FEEDS_CONF: firmware_build/hanwckf.feeds.conf.default
   CONFIG_FILE: firmware_build/hanwckf.config
   DIY_P1_SH: firmware_build/hanwckf.diy-part1.sh
   DIY_P2_SH: firmware_build/hanwckf.diy-part2.sh
