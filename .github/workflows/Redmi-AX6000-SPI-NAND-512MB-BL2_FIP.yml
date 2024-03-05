@@ -8,10 +8,10 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-###【【只用于红米AX6000改512MB闪存后编译BL2和FIP】】P###
+###只用于红米AX6000改512MB闪存后编译BL2和多分区布局FIP【未上机测试】###
 
 ###############改名字##############
-name: Redmi-AX6000-SPI-NAND-512MB-BL2_FIP-lgs2007m
+name: Redmi-AX6000-SPI-NAND-512MB-BL2_FIP
 
 on:
   repository_dispatch:
@@ -27,14 +27,13 @@ on:
 env:
   REPO_URL: https://github.com/hanwckf/bl-mt798x
   REPO_BRANCH: master
-  DIY_SH: atf_uboot_build/diy-part.sh
   SSH_ACTIONS: false
   UPLOAD_FIRMWARE: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
   ###############改名字##############
-  OPENWRT_NAME: lgs2007m
-  DEVICE_NAME: redmi_ax6000-spi-nand_512m-bl2_fip
+  OPENWRT_NAME: hanwckf
+  DEVICE_NAME: redmi_ax6000_spinand-512m_bl2_fip
 
 jobs:
   build:
@@ -54,10 +53,6 @@ jobs:
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
-        ##------Build Prepare------
-        sudo -E apt-get -qq install gcc-aarch64-linux-gnu
-        export CROSS_COMPILE=aarch64-linux-gnu-
-        ##-------------------------
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
@@ -69,13 +64,7 @@ jobs:
       run: |
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt     
-    
-    - name: 加载DIY脚本
-      run: |
-        chmod +x $DIY_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_SH
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
     - name: SSH链接管理
       uses: P3TERX/ssh2actions@v1.0.0
@@ -90,7 +79,8 @@ jobs:
         cd openwrt
         echo -e "$(nproc) thread compile"
         sudo apt install gcc-aarch64-linux-gnu build-essential flex bison libssl-dev
-        SOC=mt7986 BOARD=redmi_ax6000 MULTI_LAYOUT=0 ./build.sh
+        git apply redmi_ax6000_spinand-512m_bl2_fip.patch
+        SOC=mt7986 BOARD=redmi_ax6000 MULTI_LAYOUT=1 ./build.sh
         echo "FILE_DATE=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
         
@@ -103,12 +93,10 @@ jobs:
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: | 
         cd openwrt
-        mkdir -p outputfile
-        cp atf-20220606-637ba581b/.config outputfile/redmi_ax6000-spi-nand_512m_defconfig-atf
-        cp uboot-mtk-20220606/.config outputfile/redmi_ax6000-spi-nand_512m_defconfig-uboot
-        cp atf-20220606-637ba581b/build/mt7986/release/bl2.img outputfile/redmi_ax6000-spi-nand_512m-bl2.bin
-        cp atf-20220606-637ba581b/build/mt7986/release/fip.bin outputfile/redmi_ax6000-spi-nand_512m-fip-fixed-parts.bin
-        cd outputfile
+        cp atf-20220606-637ba581b/.config output/redmi_ax6000-spinand_512m_defconfig-atf
+        cp uboot-mtk-20220606/.config output/redmi_ax6000-spinand_512m_multi_layout_defconfig-uboot
+        cp uboot-mtk-20220606/arch/arm/dts/mt7986a-redmi-ax6000.dts output/mt7986a-redmi-ax6000.dts
+        cd output
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
       
@@ -125,12 +113,12 @@ jobs:
       run: |
         echo "release_tag=${{ env.FILE_DATE }}-${{ env.DEVICE_NAME }}" >> $GITHUB_OUTPUT
         touch release.txt
-        echo "由衷感谢所有为openwrt无私奉献的大佬们" >> release.txt
-        echo " uboot下载" >> release.txt
+        echo "由衷感谢所有为 mt798x 无私奉献的大佬们" >> release.txt
+        echo "红米AX6000 512M闪存BL2和多分区布局FIP下载" >> release.txt
         echo "status=success" >> $GITHUB_OUTPUT
         
     - name: 发布至release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

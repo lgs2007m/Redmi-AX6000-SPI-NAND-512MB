@@ -1,0 +1,79 @@
+diff --git a/atf-20220606-637ba581b/configs/mt7986_redmi_ax6000_defconfig b/atf-20220606-637ba581b/configs/mt7986_redmi_ax6000_defconfig
+index 686f369a..14a05e92 100644
+--- a/atf-20220606-637ba581b/configs/mt7986_redmi_ax6000_defconfig
++++ b/atf-20220606-637ba581b/configs/mt7986_redmi_ax6000_defconfig
+@@ -1,4 +1,6 @@
+ CONFIG_PLAT_MT7986=y
+-CONFIG_TARGET_FIP_NO_SEC_BOOT=y
++CONFIG_TARGET_ALL_NO_SEC_BOOT=y
+ CONFIG_FLASH_DEVICE_SPIM_NAND=y
+ CONFIG_DRAM_DDR4=y
++# CONFIG_NMBM is not set
++CONFIG_SPIM_NAND_TYPE="spim:4k+256"
+diff --git a/build.sh b/build.sh
+index 8230d89a..143e5d01 100755
+--- a/build.sh
++++ b/build.sh
+@@ -1,10 +1,10 @@
+ #!/bin/sh
+ 
+ TOOLCHAIN=aarch64-linux-gnu-
+-#UBOOT_DIR=uboot-mtk-20220606
+-UBOOT_DIR=uboot-mtk-20230718-09eda825
+-#ATF_DIR=atf-20220606-637ba581b
+-ATF_DIR=atf-20231013-0ea67d76a
++UBOOT_DIR=uboot-mtk-20220606
++#UBOOT_DIR=uboot-mtk-20230718-09eda825
++ATF_DIR=atf-20220606-637ba581b
++#ATF_DIR=atf-20231013-0ea67d76a
+ 
+ if [ -z "$SOC" ] || [ -z "$BOARD" ]; then
+ 	echo "Usage: SOC=[mt7981|mt7986] BOARD=<board name> MULTI_LAYOUT=[0|1] $0"
+@@ -76,7 +76,7 @@ make -C "$ATF_DIR" -f makefile all CONFIG_CROSS_COMPILER="${TOOLCHAIN}"
+ 
+ mkdir -p "output"
+ if [ -f "$ATF_DIR/build/${SOC}/release/fip.bin" ]; then
+-	FIP_NAME="${SOC}_${BOARD}-fip"
++	FIP_NAME="${SOC}_${BOARD}_SPINAND-512M-fip"
+ 	if [ "$fixedparts" = "1" ]; then
+ 		FIP_NAME="${FIP_NAME}-fixed-parts"
+ 	fi
+@@ -91,7 +91,7 @@ else
+ fi
+ if grep -q "CONFIG_TARGET_ALL_NO_SEC_BOOT=y" "$ATF_DIR/configs/$ATF_CFG"; then
+ 	if [ -f "$ATF_DIR/build/${SOC}/release/bl2.img" ]; then
+-		BL2_NAME="${SOC}_${BOARD}-bl2"
++		BL2_NAME="${SOC}_${BOARD}_SPINAND-512M-bl2"
+ 		cp -f "$ATF_DIR/build/${SOC}/release/bl2.img" "output/${BL2_NAME}.bin"
+ 		echo "$BL2_NAME build done"
+ 	else
+diff --git a/uboot-mtk-20220606/arch/arm/dts/mt7986a-redmi-ax6000.dts b/uboot-mtk-20220606/arch/arm/dts/mt7986a-redmi-ax6000.dts
+index a7c9312b..9c539b40 100644
+--- a/uboot-mtk-20220606/arch/arm/dts/mt7986a-redmi-ax6000.dts
++++ b/uboot-mtk-20220606/arch/arm/dts/mt7986a-redmi-ax6000.dts
+@@ -38,6 +38,13 @@
+ 			mtdids = "nmbm0=nmbm0";
+ 			mtdparts = "nmbm0:1024k(bl2),256k(Nvram),256k(Bdata),2048k(factory),2048k(fip),256k(crash),256k(crash_log),110m(ubi)";
+ 		};
++
++		layout@2 {
++			label = "immortalwrt-490m";
++			// mtd layout for immortalwrt/openwrt 490M ubi firmware (512M spi-nand)
++			mtdids = "nmbm0=nmbm0";
++			mtdparts = "nmbm0:1024k(bl2),256k(Nvram),256k(Bdata),2048k(factory),2048k(fip),256k(crash),256k(crash_log),490m(ubi)";
++		};
+ 	};
+ 
+ 	gpio-keys {
+diff --git a/uboot-mtk-20220606/configs/mt7986_redmi_ax6000_multi_layout_defconfig b/uboot-mtk-20220606/configs/mt7986_redmi_ax6000_multi_layout_defconfig
+index fa18864b..57f020b3 100644
+--- a/uboot-mtk-20220606/configs/mt7986_redmi_ax6000_multi_layout_defconfig
++++ b/uboot-mtk-20220606/configs/mt7986_redmi_ax6000_multi_layout_defconfig
+@@ -9,6 +9,7 @@ CONFIG_ENV_OFFSET=0x100000
+ CONFIG_DEFAULT_DEVICE_TREE="mt7986a-redmi-ax6000"
+ CONFIG_TARGET_MT7986=y
+ CONFIG_ENABLE_NAND_NMBM=y
++CONFIG_NMBM_MAX_BLOCKS=64
+ CONFIG_MEDIATEK_BOOTMENU=y
+ CONFIG_MEDIATEK_BOOTMENU_DELAY=3
+ CONFIG_MEDIATEK_MULTI_MTD_LAYOUT=y
