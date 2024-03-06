@@ -9,3 +9,5 @@
 ```bash
 insmod /lib/modules/$(uname -r)/mtd-rw.ko i_want_a_brick=1
 ```
+
+### 刷砖也不怕！可以通过串口救砖：[MediaTek Filogic 系列路由器串口救砖教程](https://www.cnblogs.com/p123/p/18046679)
